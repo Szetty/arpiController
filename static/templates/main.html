@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>STS-PI CONTROLLER</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="static/css/normalize.css">
+    <link rel="stylesheet" href="static/css/skeleton.css">
+    <link rel="stylesheet" href="static/css/style.css">
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="static/images/favicon.png">
+
+</head>
+<body>
+
+<!-- Primary Page Layout
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<div class="container">
+    <div class="row">
+        <div class="one-third column" style="margin-top: 10%">
+            <a class="button button-primary u-full-width" onclick="updateState('left')" href="javascript:void(0)">
+                Left
+            </a>
+        </div>
+        <div class="one-third column" style="margin-top: 10%">
+            <a class="button button-primary u-full-width" onclick="updateState('forward')" href="javascript:void(0)">
+                Forward
+            </a>
+        </div>
+        <div class="one-third column" style="margin-top: 10%">
+            <a class="button button-primary u-full-width" onclick="updateState('right')" href="javascript:void(0)">
+                Right
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="one-third column" style="margin-top: 10%">
+            <a class="button button-primary u-full-width" onclick="updateState('clockwise')" href="javascript:void(0)">
+                Clockwise
+            </a>
+        </div>
+        <div class="one-third column" style="margin-top: 10%">
+            <a class="button button-primary u-full-width" onclick="updateState('back')" href="javascript:void(0)">
+                Back
+            </a>
+        </div>
+        <div class="one-third column" style="margin-top: 10%">
+            <a class="button button-primary u-full-width" onclick="updateState('anti-clockwise')"
+               href="javascript:void(0)">
+                Anti-clockwise
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="one-third column" style="margin-top: 10%">
+        </div>
+        <div class="one-third column" style="margin-top: 10%">
+            <a class="button button-primary u-full-width" onclick="updateState('stop')" href="javascript:void(0)">
+                Stop
+            </a>
+        </div>
+        <div class="one-third column" style="margin-top: 10%">
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <img id="video"/>
+        </div>
+    </div>
+</div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script src="static/js/httpClient.js"></script>
+<script>
+    function updateState(state) {
+        httpClient.get("/api/updateState/" + state)
+    }
+    if (window["WebSocket"]) {
+        const conn = new WebSocket("ws://" + document.location.host + "/video");
+        conn.onclose = function () {
+            console.log("Connection closed.");
+        };
+        conn.onmessage = (evt) => document.getElementById("video").src = "data:image/jpg;base64, " + evt.data
+    } else {
+        console.log("Your browser does not support WebSockets");
+    }
+</script>
+</body>
+</html>
