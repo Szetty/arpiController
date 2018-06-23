@@ -81,7 +81,7 @@
     </div>
     <div class="row">
         <div class="column">
-            <img id="video"/>
+            <img id="video" src="/static/current.jpg"/>
         </div>
     </div>
 </div>
@@ -90,18 +90,15 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 <script src="static/js/httpClient.js"></script>
 <script>
+    const imageUrl = "/static/current.jpg";
     function updateState(state) {
         httpClient.get("/api/updateState/" + state)
     }
-    if (window["WebSocket"]) {
-        const conn = new WebSocket("ws://" + document.location.host + "/video");
-        conn.onclose = function () {
-            console.log("Connection closed.");
-        };
-        conn.onmessage = (evt) => document.getElementById("video").src = "data:image/jpg;base64, " + evt.data
-    } else {
-        console.log("Your browser does not support WebSockets");
+    function updateImage() {
+        document.getElementById("video").src = imageUrl + "?t=" +  new Date().getTime()
+        setInterval(updateImage, 1000)
     }
+    updateImage()
 </script>
 </body>
 </html>

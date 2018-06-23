@@ -15,10 +15,10 @@ const (
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", MainHandler)
-	r.HandleFunc("/video", video.VideoHandler)
 	buildApiRouter(r.PathPrefix("/api").Subrouter())
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	log.Println("Starting server at address " + address)
+	go video.ImageHandler()
 	log.Fatal(http.ListenAndServe(address, r))
 }
 
