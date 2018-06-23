@@ -9,6 +9,7 @@ import (
 	"time"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 var (
@@ -40,6 +41,8 @@ func VideoHandler(writer http.ResponseWriter, request *http.Request) {
 }
 
 func (writer webSocketVideoWriter) Write(p []byte) (n int, err error) {
+	f, _ := os.Create("images/" + strconv.Itoa(int(time.Now().Unix())) + ".jpg")
+	f.Write(p)
 	data := base64.StdEncoding.EncodeToString(p)
 	err = writer.conn.WriteMessage(websocket.TextMessage, []byte(data))
 	return len(p), err
