@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+from flask import Flask
 
 def init_eh():
     try:
@@ -8,6 +9,7 @@ def init_eh():
         return None
 
 
+app = Flask(__name__)
 eh = init_eh()
 
 
@@ -68,9 +70,15 @@ def update_state(state):
         print("No state with name " + state)
 
 
+@app.route("/<state>")
+def update_robot(state=None):
+    update_state(state)
+    return "ok"
+
+
 if __name__ == "__main__":
     parser = ArgumentParser(description='Controller for Explorer Hat Motors')
-    parser.add_argument('state', metavar='s', type=string, help='New state for the robot. This can be forward, back, left, right, stop, clockwise, anti-clockwise.')
+    parser.add_argument('-p', '--port', help='Port on which the http server will run')
 
     args = parser.parse_args()
-    update_state(args.state)
+    app.run(host='0.0.0.0', port=80)
