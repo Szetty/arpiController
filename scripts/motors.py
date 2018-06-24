@@ -81,4 +81,4 @@ if __name__ == "__main__":
     parser.add_argument('-p', '--port', help='Port on which the http server will run')
 
     args = parser.parse_args()
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=args.port)
