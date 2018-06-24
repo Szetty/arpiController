@@ -130,8 +130,8 @@ func generator(ch chan []byte) {
 func Broadcast() {
 	c := make(chan []byte)
 	go broadcaster(c)
-	// go generator(c)
-	go testgen(c)
+	go generator(c)
+	//go testgen(c)
 }
 
 func Len() int {
