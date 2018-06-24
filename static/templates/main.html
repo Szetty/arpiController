@@ -81,7 +81,7 @@
     </div>
     <div class="row">
         <div class="column">
-            <img id="video" src="/static/current.jpg"/>
+            <img id="video" src="/video">
         </div>
     </div>
 </div>
@@ -90,15 +90,9 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 <script src="static/js/httpClient.js"></script>
 <script>
-    const imageUrl = "/static/current.jpg";
     function updateState(state) {
         httpClient.get("/api/updateState/" + state)
     }
-    function updateImage() {
-        document.getElementById("video").src = imageUrl + "?t=" +  new Date().getTime()
-        setInterval(updateImage, 1000)
-    }
-    updateImage()
 </script>
 </body>
 </html>

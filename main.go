@@ -15,11 +15,20 @@ const (
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", MainHandler)
+	r.HandleFunc("/video", VideoHandler)
 	buildApiRouter(r.PathPrefix("/api").Subrouter())
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	log.Println("Starting server at address " + address)
-	go video.ImageHandler()
+	video.Broadcast()
 	log.Fatal(http.ListenAndServe(address, r))
+}
+func VideoHandler(writer http.ResponseWriter, request *http.Request) {
+	writer.Header().Add("Content-Type", "multipart/x-mixed-replace;boundary=--BOUNDARY")
+	writer.Header().Set("Cache-Control", "no-cache")
+	writer.Header().Set("Connection", "keep-alive")
+	if c, ok := writer.(http.CloseNotifier); ok {
+		video.StreamTo(writer, c.CloseNotify())
+	}
 }
 
 func buildApiRouter(router *mux.Router) {
