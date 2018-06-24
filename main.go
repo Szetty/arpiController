@@ -6,11 +6,20 @@ import (
 	"github.com/hoisie/mustache"
 	"log"
 	"arpiController/video"
+	"arpiController/scripts"
+	"strconv"
+	"io/ioutil"
 )
 
 const (
 	address = "0.0.0.0:8080"
+	motorsPort = 8081
 )
+
+func init() {
+	video.Broadcast()
+	scripts.RunScript("motors", motorsPort)
+}
 
 func main() {
 	r := mux.NewRouter()
@@ -19,7 +28,6 @@ func main() {
 	buildApiRouter(r.PathPrefix("/api").Subrouter())
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	log.Println("Starting server at address " + address)
-	video.Broadcast()
 	log.Fatal(http.ListenAndServe(address, r))
 }
 func VideoHandler(writer http.ResponseWriter, request *http.Request) {
@@ -36,6 +44,17 @@ func buildApiRouter(router *mux.Router) {
 		state := mux.Vars(request)["state"]
 		log.Println("Changing to state " + state)
 		writer.WriteHeader(200)
+		resp, err := http.Get("http://localhost:" + strconv.Itoa(motorsPort) + "/" + state)
+		if err != nil {
+			log.Println(err.Error())
+		}
+		respBody, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Println(err.Error())
+		}
+		if string(respBody) != "ok" {
+			log.Println(string(respBody))
+		}
 	})
 }
 
