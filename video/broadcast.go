@@ -12,6 +12,7 @@ import (
 	"io"
 	"os"
 	"sync"
+	"log"
 )
 
 var boundary = flag.String("boundary", "--BOUNDARY", "boundary marker")
@@ -128,6 +129,7 @@ func generator(ch chan []byte) {
 }
 
 func Broadcast() {
+	log.Println("Start broadcasting")
 	c := make(chan []byte)
 	go broadcaster(c)
 	go generator(c)
