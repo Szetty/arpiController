@@ -1,22 +1,15 @@
-package video
+package rpiCamera
 
 //Copyright (c) 2016 Remi Gillig <remigillig@gmail.com>
 
 import (
 	"bytes"
-	"fmt"
-	"os"
 )
 
 var magic = []byte{0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46, 0x49, 0x46, 0x00}
 var work = make([]byte, len(magic))
-var indices = make([]int, 0, 4)
 var total = 0
 var buffer = new(bytes.Buffer)
-
-func debug(format string, args ...interface{}) {
-	fmt.Fprintf(os.Stderr, format, args...)
-}
 
 type ImageCallback func(image []byte)
 
