@@ -26,7 +26,6 @@ func init() {
 	if *withMotors {
 		scripts.RunScript("motors", motorsPort)
 	}
-	video.Broadcast()
 }
 
 func main() {
@@ -39,13 +38,8 @@ func main() {
 	log.Fatal(http.ListenAndServe(address, r))
 }
 
-func VideoHandler(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Add("Content-Type", "multipart/x-mixed-replace;boundary=--BOUNDARY")
-	writer.Header().Set("Cache-Control", "no-cache")
-	writer.Header().Set("Connection", "keep-alive")
-	if c, ok := writer.(http.CloseNotifier); ok {
-		video.StreamTo(writer, c.CloseNotify())
-	}
+func VideoHandler(wr http.ResponseWriter, r *http.Request) {
+	video.GetVideo(wr, r)
 }
 
 func buildApiRouter(router *mux.Router) {
