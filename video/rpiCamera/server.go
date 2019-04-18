@@ -3,6 +3,7 @@ package rpiCamera
 import (
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
 )
 
@@ -20,6 +21,9 @@ func RunServer(port int) {
 func monitorServer(cmd *exec.Cmd) {
 	err := cmd.Wait()
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Printf("Streamer exited with: %v", err)
+		log.Println(cmd.Stdout)
+		log.Println(cmd.Stderr)
+		os.Exit(1)
 	}
 }
