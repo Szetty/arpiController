@@ -9,10 +9,16 @@ import (
 
 func RunServer(port int) {
 	args := []string{
-		"-o",
-		fmt.Sprintf(`"output_http.so -w ./www -p %d"`, port),
 		"-i",
-		`"input_raspicam.so -vf -hf"`,
+		`"input_raspicam.so`,
+		"-vf",
+		`-hf"`,
+		"-o",
+		`"output_http.so`,
+		"-w",
+		"./www",
+		"-p",
+		fmt.Sprintf(`%d"`, port),
 	}
 	cmd := exec.Command("mjpg_streamer", args...)
 	cmd.Env = append(os.Environ(), "LD_LIBRARY_PATH=/home/pi/mjpg-streamer/mjpg-streamer-experimental")
