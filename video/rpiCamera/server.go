@@ -8,11 +8,17 @@ import (
 )
 
 func RunServer(port int) {
-	args := fmt.Sprintf(`-o "output_http.so -w ./www -p %d" -i "input_raspicam.so -vf -hf"`, port)
-	cmd := exec.Command("mjpg_streamer", args)
+	args := []string{
+		"-o",
+		fmt.Sprintf(`"output_http.so -w ./www -p %d"`, port),
+		"-i",
+		`"input_raspicam.so -vf -hf"`,
+	}
+	cmd := exec.Command("mjpg_streamer", args...)
 	cmd.Env = append(os.Environ(), "LD_LIBRARY_PATH=/home/pi/mjpg-streamer/mjpg-streamer-experimental")
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
+	log.Printf("Command is: %+v", cmd)
 	log.Println("Starting raspberry pi camera streamer")
 	err := cmd.Start()
 	if err != nil {
