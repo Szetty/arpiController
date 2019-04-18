@@ -1,7 +1,6 @@
 package video
 
 import (
-	"arpiController/video/rpiCamera"
 	"flag"
 	"io"
 	"log"
@@ -17,9 +16,6 @@ var (
 
 func init() {
 	flag.Parse()
-	if *withRaspberryCamera {
-		rpiCamera.RunServer(*raspberryStreamerPort)
-	}
 }
 
 func GetVideo(wr http.ResponseWriter, r *http.Request) {
