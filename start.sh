@@ -1,3 +1,3 @@
 #!/bin/bash
 
-go run arpiController.go
+./arpiController -withRpiCamera -withMotors

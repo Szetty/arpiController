@@ -14,4 +14,12 @@ func RunServer(port int) {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+	go monitorServer(cmd)
+}
+
+func monitorServer(cmd *exec.Cmd) {
+	err := cmd.Wait()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
