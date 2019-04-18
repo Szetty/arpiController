@@ -14,10 +14,6 @@ var (
 	raspberryStreamerPort = flag.Int("rpiStreamerPort", 8000, "Specifies on what port should the streamer run")
 )
 
-func init() {
-	flag.Parse()
-}
-
 func GetVideo(wr http.ResponseWriter, r *http.Request) {
 	if *withRaspberryCamera {
 		getVideoFromStreamer(wr, r)
