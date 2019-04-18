@@ -10,6 +10,8 @@ import (
 func RunServer(port int) {
 	args := fmt.Sprintf(`-o "output_http.so -w ./www -p %d" -i "input_raspicam.so -vf -hf"`, port)
 	cmd := exec.Command("mjpg_streamer", args)
+	cmd.Stderr = os.Stderr
+	cmd.Stdout = os.Stdout
 	log.Println("Starting raspberry pi camera streamer")
 	err := cmd.Start()
 	if err != nil {
@@ -21,9 +23,6 @@ func RunServer(port int) {
 func monitorServer(cmd *exec.Cmd) {
 	err := cmd.Wait()
 	if err != nil {
-		log.Printf("Streamer exited with: %v", err)
-		log.Println(cmd.Stdout)
-		log.Println(cmd.Stderr)
-		os.Exit(1)
+		log.Fatalf("Streamer exited with: %v", err)
 	}
 }
