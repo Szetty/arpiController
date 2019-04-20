@@ -12,7 +12,6 @@ def init_eh():
 app = Flask(__name__)
 eh = init_eh()
 
-
 def forward():
     eh.motor.one.backwards(100)
     eh.motor.two.forwards(100)
@@ -22,30 +21,19 @@ def backward():
     eh.motor.one.forwards(100)
     eh.motor.two.backwards(100)
 
-
-def left():
-    eh.motor.two.stop()
-    eh.motor.one.backwards(100)
-
-
-def right():
-    eh.motor.one.stop()
-    eh.motor.two.forwards(100)
-
-
 def stop():
     eh.motor.one.stop()
     eh.motor.two.stop()
 
 
-def clockwise():
-    eh.motor.one.forwards(100)
-    eh.motor.two.forwards(100)
+def right():
+    eh.motor.one.forwards(20)
+    eh.motor.two.forwards(20)
 
 
-def anti_clockwise():
-    eh.motor.one.backwards(100)
-    eh.motor.two.backwards(100)
+def left():
+    eh.motor.one.backwards(20)
+    eh.motor.two.backwards(20)
 
 
 stateToFunction = {
@@ -54,8 +42,6 @@ stateToFunction = {
     "left": left,
     "right": right,
     "stop": stop,
-    "clockwise": clockwise,
-    "anti-clockwise": anti_clockwise
 }
 
 
